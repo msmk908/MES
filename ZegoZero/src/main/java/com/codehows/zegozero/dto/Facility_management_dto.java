@@ -11,7 +11,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Facility_management_dto {
+public class Facility_management_Dto {
     private Integer equipment_plan_id;
     private Date estimated_start_date;
     private Date estimated_end_date;

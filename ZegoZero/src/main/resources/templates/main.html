@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- dataTable -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+
+    <style>
+        /* 드롭다운 */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+        /* 설비 가동 현황 */
+        table#equipmentTable th {
+            border: 1px solid black;
+            padding: 8px 15px; /* 좌우 여백 조절 */
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 헤더 부분 -->
+<div th:replace="header :: header"></div>
+
+<!-- 컨텐츠 부분 -->
+<div class="p-3">
+    <!-- 위쪽 2칸 -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="p-3 border bg-light">
+                <div class="row">
+                    <div class="col-6">
+                        <button id="dailyButton" class="btn btn-primary" style="width: 100%;">일일 생산량</button>
+                    </div>
+                    <div class="col-6">
+                        <button id="monthlyButton" class="btn btn-secondary" style="width: 100%;">월간 생산량</button>
+                    </div>
+                </div>
+                <canvas id="myChart1"></canvas>
+            </div>
+        </div>
+        <!-- 설비 가동 현황 -->
+        <div class="col-md-9">
+            <div class="p-3 border bg-light">
+                <table id="equipmentTable" style="border-collapse: separate; border-spacing: 5px; width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>추출기1</th>
+                        <th>추출기2</th>
+                        <th>살균기1</th>
+                        <th>살균기2</th>
+                        <th>혼합기1</th>
+                        <th>혼합기2</th>
+                        <th>여과기</th>
+                        <th>충진기1(즙)</th>
+                        <th>충진기2(즙)</th>
+                        <th>충진기3(젤리)</th>
+                        <th>충진기4(젤리)</th>
+                        <th>Box포장기</th>
+                        <th>검사기</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- 아래쪽 3칸 -->
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="p-3 border bg-light">
+                <canvas id="myChart2"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 border bg-light">
+                <table id="myTable1" class="display">
+                    <thead>
+                    <tr>
+                        <th><button onclick="refreshTable1()">새로고침</button></th>
+                        <th>예상 생산량</th>
+                        <th>실제 생산량</th>
+                        <th>불량률</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>충진기1(즙)</td>
+                        <td>100box</td>
+                        <td>97box</td>
+                        <td>3%</td>
+                    </tr>
+                    <tr>
+                        <td>충진기2(즙)</td>
+                        <td>200box</td>
+                        <td>198box</td>
+                        <td>1%</td>
+                    </tr>
+                    <tr>
+                        <td>충진기3(젤리)</td>
+                        <td>200box</td>
+                        <td>198box</td>
+                        <td>1%</td>
+                    </tr>
+                    <tr>
+                        <td>충진기4(젤리)</td>
+                        <td>100box</td>
+                        <td>97box</td>
+                        <td>3%</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="p-3 border bg-light">
+                <table id="myTable2" class="display">
+                    <thead>
+                    <tr>
+                        <th>수주번호</th>
+                        <th>현재 상태</th>
+                        <th>작업 진행률</th>
+                        <th>회사명</th>
+                        <th>예상 출하일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>5</td>
+                        <td>포장</td>
+                        <td>75%</td>
+                        <td>코딩노가다</td>
+                        <td>2024-06-15</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>살균</td>
+                        <td>50%</td>
+                        <td>코딩노가다</td>
+                        <td>2024-06-12</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>추출</td>
+                        <td>16%</td>
+                        <td>코딩노가다</td>
+                        <td>2024-06-20</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- dataTable -->
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- dataTable 초기화/설정 -->
+<script>
+    $(document).ready( function () {
+        $('#myTable1').DataTable({
+            "searching": false,     // 검색 상자 비활성화
+            "paging": false,        // 페이지네이션 비활성화
+            "ordering": false       // 정렬 기능 비활성화
+        });
+        $('#myTable2').DataTable({
+            "searching": false,     // 검색 상자 비활성화
+            "lengthChange": false   // Entries per page 드롭다운 비활성화
+        });
+
+        // "Showing X entries" 메시지 숨기기
+        $('#myTable1_info').hide();  // myTable1의 "Showing X entries" 메시지 숨기기
+        $('#myTable2_info').hide();  // myTable2의 "Showing X entries" 메시지 숨기기
+
+        // DataTables 초기화 후 width 속성을 100%로 변경
+        $('#myTable1_wrapper').find('table').css({
+            'width': '100%',
+            'margin': '0',
+            'padding': '3px'
+        });
+        $('#myTable2_wrapper').find('table').css({
+            'width': '100%',
+            'margin': '0',
+            'padding': '3px'
+        });
+    } );
+
+    // 새로고침 버튼 클릭 시 DataTable1 다시 로드
+    function refreshTable1() {
+        $('#myTable1').DataTable().ajax.reload();
+    }
+</script>
+
+<!-- Chart.js 초기화/설정 -->
+<script>
+    const ctx1 = document.getElementById('myChart1');
+    const ctx2 = document.getElementById('myChart2');
+
+    // Chart1: 일일 생산량과 월간 생산량
+    const myChart1 = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['일일 생산량'],
+            datasets: [{
+                label: '생산량',
+                data: [0],
+                backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+                borderColor: ['rgba(54, 162, 235, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    <!-- 일일 생산량 데이터 가져오는 부분 -->
+    document.getElementById('dailyButton').addEventListener('click', function() {
+        fetch('/api/dailyProduction')
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => formatDate(item.received_date));  // 날짜 데이터 변환
+                const values = data.map(item => item.received_quantity);  // 생산 데이터
+                myChart1.data.labels = labels;
+                myChart1.data.datasets[0].data = values;
+                myChart1.data.datasets[0].backgroundColor = 'rgba(54, 162, 235, 0.2)';
+                myChart1.data.datasets[0].borderColor = 'rgba(54, 162, 235, 1)';
+                myChart1.update();
+
+            })
+    });
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    }
+
+    <!-- 월간 생산량 데이터 가져오는 부분 -->
+    document.getElementById('monthlyButton').addEventListener('click', function() {
+        fetch('/api/monthlyProduction')
+            .then(response => response.json())
+            .then(data => {
+                const labels = Object.keys(data);  // 월별 레이블 가져오기
+                const values = Object.values(data);  // 월간 생산량 데이터 가져오기
+
+                // Chart.js 데이터 업데이트
+                myChart1.data.labels = labels;
+                myChart1.data.datasets[0].data = values;
+                myChart1.data.datasets[0].backgroundColor = 'rgba(255, 99, 132, 0.2)';
+                myChart1.data.datasets[0].borderColor = 'rgba(255, 99, 132, 1)';
+                myChart1.update();
+            });
+    });
+
+    // Chart2: 생산실적 백분율
+    const myChart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: [], // 레이블은 비어있음
+            datasets: [{
+                label: '투입량 대비 산출량 (%)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                data: [], // 초기 데이터는 비어있음
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%'; // y축에 퍼센트 표시 추가
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // 생산실적 데이터 가져오기
+    fetch('/api/performance')
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => `주문 ${item.order_id}`); // 수주번호를 레이블로 사용
+            const percentages = calculatePercentages(data); // 백분율 계산
+
+            // Chart.js 데이터 업데이트
+            myChart2.data.labels = labels;
+            myChart2.data.datasets[0].data = percentages;
+            myChart2.update();
+        });
+
+    // 백분율 계산 함수
+    function calculatePercentages(data) {
+        const percentages = [];
+        data.forEach(item => {
+            const percentage = (item.output / item.input) * 100;
+            percentages.push(Math.round(percentage * 100) / 100); // 소수점 둘째 자리까지 반올림
+        });
+        return percentages;
+    }
+</script>
+
+</body>
+</html>

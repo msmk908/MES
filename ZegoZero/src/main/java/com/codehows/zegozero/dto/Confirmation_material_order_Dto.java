@@ -9,7 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Confirmation_material_order_dto {
+public class Confirmation_material_order_Dto {
+
     private Integer order_id;
     private String raw_material;
     private Integer production_quantity;

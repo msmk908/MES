@@ -11,7 +11,9 @@ import java.sql.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Finished_product_management_dto {
+public class Finished_product_management_Dto {
+
+    // 수주 진행 상황 dto
     private Integer order_id;
     private String product_name;
     private Integer received_quantity;

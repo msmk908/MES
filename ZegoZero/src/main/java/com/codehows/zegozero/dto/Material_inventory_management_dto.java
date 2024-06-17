@@ -11,7 +11,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Material_inventory_management_dto {
+public class Material_inventory_management_Dto {
     private Integer order_id;
     private Integer purchase_order_id;
     private String raw_material;
